@@ -72,7 +72,7 @@ Application Options:
       --sd=     slice with a default (default: 1, 2)
 
 Config:
-      ----conf= config file paths (default: examples/conf/config.yaml)
+      --conf= config file paths (default: examples/conf/config.yaml)
 
 Help Options:
   -h, --help    Show this help message
