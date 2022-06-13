@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	cfg, err := conf.Load[Config](conf.ConfigFlag("--conf", "examples/conf/config.yaml"))
+	cfg, err := conf.Load[Config](conf.ConfigFlag("conf", "examples/conf/config.yaml"))
 	if err != nil {
 		log.Fatalf("failed to load config: %s", err)
 	}
