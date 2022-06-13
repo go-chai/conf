@@ -2,8 +2,10 @@ package conf
 
 import (
 	stderr "errors"
+	"io"
 	"io/fs"
 	"os"
+	"reflect"
 
 	"github.com/cockroachdb/errors"
 	"github.com/go-playground/validator/v10"
@@ -15,6 +17,7 @@ var validate = validator.New()
 
 func Load[T any](opts ...ConfOption) (*T, error) {
 	cfg := new(T)
+	cfgDefaults := new(T)
 	var err error
 
 	copts := &confOptions{
@@ -34,7 +37,7 @@ func Load[T any](opts ...ConfOption) (*T, error) {
 	// 	load the defaults
 	// 	obtain the config file paths
 	// 	handle the Help message
-	paths, err := mergeDefaults(cfg, copts)
+	paths, err := mergeDefaults(cfgDefaults, copts)
 	if err != nil {
 		flagsErr := new(flags.Error)
 		if errors.As(err, &flagsErr) {
@@ -60,6 +63,14 @@ func Load[T any](opts ...ConfOption) (*T, error) {
 		return nil, err
 	}
 
+	// Step 4: Merge defaults
+	// 	override the empty values with defaults
+	//  use a custom transformer to avoid map Options containing the default values if they are set in a config file
+	err = mergo.Merge(cfg, cfgDefaults, mergo.WithTransformers(mapDefaultsTransformer{}))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to merge defaults")
+	}
+
 	if !copts.noValidation {
 		err = validate.Struct(cfg)
 		if err != nil {
@@ -68,6 +79,23 @@ func Load[T any](opts ...ConfOption) (*T, error) {
 	}
 
 	return cfg, nil
+}
+
+type mapDefaultsTransformer struct {
+}
+
+func (mapDefaultsTransformer) Transformer(t reflect.Type) func(dst, src reflect.Value) error {
+	// use a custom transformer only for maps
+	if t.Kind() != reflect.Map {
+		return nil
+	}
+	return func(dst, src reflect.Value) error {
+		// only merge if dst is empty
+		if dst.IsNil() || len(dst.MapKeys()) == 0 && dst.CanSet() {
+			dst.Set(src)
+		}
+		return nil
+	}
 }
 
 type fileConfig struct {
@@ -111,7 +139,6 @@ func parseFlags(cfg any, defaults bool, copts *confOptions) ([]configPath, error
 		}
 		return paths, nil
 	}
-
 	return nil, nil
 }
 
@@ -124,7 +151,7 @@ func mergeConfigFiles(copts *confOptions, cfg any, paths ...configPath) (loadedP
 	for _, path := range paths {
 		ok, err := mergeConfigFile(path.optional, copts, cfg, path.path)
 		if err != nil {
-			return loadedPaths, errors.Wrapf(err, "failed to merge config file %s", path)
+			return loadedPaths, errors.Wrapf(err, "failed to merge config file %s", path.path)
 		}
 		if ok {
 			loadedPaths = append(loadedPaths, path.path)
@@ -139,7 +166,7 @@ func mergeConfigFile(optional bool, copts *confOptions, cfg any, path string) (o
 		if optional && stderr.Is(err, fs.ErrNotExist) {
 			return false, nil
 		}
-		return false, errors.Wrap(err, "failed to open config file")
+		return false, errors.Wrapf(err, "failed to open required config file %s", path)
 	}
 	defer f.Close()
 
@@ -147,7 +174,7 @@ func mergeConfigFile(optional bool, copts *confOptions, cfg any, path string) (o
 	if err != nil {
 		return false, err
 	}
-	if err := dec(cfg, f); err != nil {
+	if err := dec(cfg, f); err != nil && !stderr.Is(err, io.EOF) {
 		return false, err
 	}
 	return true, nil

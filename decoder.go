@@ -1,7 +1,6 @@
 package conf
 
 import (
-	"encoding/json"
 	"io"
 	"path/filepath"
 
@@ -29,12 +28,14 @@ var DefaultDecoders = map[string]DecoderFunc{
 }
 
 var YAMLDecoder = func(cfg any, r io.Reader) error {
-	return yaml.NewDecoder(r).Decode(cfg)
+	err := yaml.NewDecoder(r).Decode(cfg)
+	return errors.Wrap(err, "failed to decode yaml")
 }
 var JSONDecoder = func(cfg any, r io.Reader) error {
-	return json.NewDecoder(r).Decode(cfg)
+	err := yaml.NewDecoder(r).Decode(cfg)
+	return errors.Wrap(err, "failed to decode json")
 }
 var TOMLDecoder = func(cfg any, r io.Reader) error {
 	_, err := toml.DecodeReader(r, cfg)
-	return err
+	return errors.Wrap(err, "failed to decode toml")
 }

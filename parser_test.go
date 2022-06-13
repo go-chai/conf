@@ -15,26 +15,26 @@ import (
 )
 
 type defaultOptions struct {
-	Int        int `long:"i" yaml:"int"`
-	IntDefault int `long:"id" default:"1" yaml:"intDefault"`
+	Int        int `long:"i" yaml:"int" toml:"int" json:"int"`
+	IntDefault int `long:"id" default:"1" yaml:"intDefault" toml:"intDefault" json:"intDefault"`
 
-	Float64        float64 `long:"f" yaml:"float64"`
-	Float64Default float64 `long:"fd" default:"-3.14"  yaml:"float64Default"`
+	Float64        float64 `long:"f" yaml:"float64" toml:"float64" json:"float64"`
+	Float64Default float64 `long:"fd" default:"-3.14" yaml:"float64Default" toml:"float64Default" json:"float64Default"`
 
-	NumericFlag bool `short:"3"`
+	NumericFlag bool `short:"3" yaml:"numericFlag" toml:"numericFlag" json:"numericFlag"`
 
-	String            string `long:"str" yaml:"string"`
-	StringDefault     string `long:"strd" default:"abc" yaml:"stringDefault"`
-	StringNotUnquoted string `long:"strnot" unquote:"false"`
+	String            string `long:"str" yaml:"string" toml:"string" json:"string"`
+	StringDefault     string `long:"strd" default:"abc" yaml:"stringDefault" toml:"stringDefault" json:"stringDefault"`
+	StringNotUnquoted string `long:"strnot" unquote:"false" yaml:"stringNotUnquoted" toml:"stringNotUnquoted" json:"stringNotUnquoted"`
 
-	Time        time.Duration `long:"t" yaml:"time"`
-	TimeDefault time.Duration `long:"td" default:"1m" yaml:"timeDefault"`
+	Time        time.Duration `long:"t" yaml:"time" toml:"time" json:"time"`
+	TimeDefault time.Duration `long:"td" default:"1m" yaml:"timeDefault" toml:"timeDefault" json:"timeDefault"`
 
-	Map        map[string]int `long:"m" yaml:"map"`
-	MapDefault map[string]int `long:"md" default:"a:1" yaml:"mapDefault"`
+	Map        map[string]int `long:"m" yaml:"map" toml:"map" json:"map"`
+	MapDefault map[string]int `long:"md" default:"a:1" yaml:"mapDefault" toml:"mapDefault" json:"mapDefault"`
 
-	Slice        []int `long:"s" yaml:"slice"`
-	SliceDefault []int `long:"sd" default:"1" default:"2" yaml:"sliceDefault"`
+	Slice        []int `long:"s" yaml:"slice" toml:"slice" json:"slice"`
+	SliceDefault []int `long:"sd" default:"1" default:"2" yaml:"sliceDefault" toml:"sliceDefault" json:"sliceDefault"`
 }
 
 func TestDefaults(t *testing.T) {

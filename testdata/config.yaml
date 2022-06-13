@@ -9,7 +9,6 @@ timeDefault: 11m
 map:
   val1: 3
   val2: 4
-
 mapDefault:
   val21: 21
   val22: 22

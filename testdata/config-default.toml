@@ -1,0 +1,8 @@
+int = 3
+float64 = 2.712
+string = 'asdf'
+time = "13s"
+slice = [1, 2, 3]
+[map]
+  val1 = 3
+  val2 = 4

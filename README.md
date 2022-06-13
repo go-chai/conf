@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	cfg, err := conf.Load[Config](conf.ConfigFlag("conf", "examples/conf/config.yaml"))
+	cfg, err := conf.Load[Config](conf.ConfigFlag("conf", "testdata/config.yaml"))
 	if err != nil {
 		log.Fatalf("failed to load config: %s", err)
 	}
@@ -72,10 +72,11 @@ Application Options:
       --sd=     slice with a default (default: 1, 2)
 
 Config:
-      --conf= config file paths (default: examples/conf/config.yaml)
+      --conf=   config file paths (default: testdata/config.yaml)
 
 Help Options:
   -h, --help    Show this help message
+
 
 ```
 
@@ -98,7 +99,6 @@ map:
     val1: 3
     val2: 4
 mapDefault:
-    a: 1
     val21: 21
     val22: 22
 slice:

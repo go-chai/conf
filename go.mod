@@ -3,8 +3,10 @@ module github.com/go-chai/conf
 go 1.18
 
 require (
-	github.com/BurntSushi/toml v1.1.0
+	github.com/BurntSushi/toml v1.1.1-0.20220607204713-0a9f2b05b636
 	github.com/cockroachdb/errors v1.9.0
+	github.com/davecgh/go-spew v1.1.1
+	github.com/ghodss/yaml v1.0.1-0.20220118164431-d8423dcdf344
 	github.com/go-playground/validator/v10 v10.11.0
 	github.com/imdario/mergo v0.3.13
 	github.com/jessevdk/go-flags v1.5.0
@@ -15,7 +17,6 @@ require (
 require (
 	github.com/cockroachdb/logtags v0.0.0-20211118104740-dabe8e521a4f // indirect
 	github.com/cockroachdb/redact v1.1.3 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.12.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -29,4 +30,5 @@ require (
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 	golang.org/x/text v0.3.7 // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 )

@@ -1,0 +1,28 @@
+{
+  "int": 3,
+  "intDefault": 13,
+  "float64": 2.712,
+  "float64Default": 1.1234,
+  "string": "asdf",
+  "stringDefault": "defg",
+  "time": "13s",
+  "timeDefault": "11m",
+  "map": {
+    "val1": 3,
+    "val2": 4
+  },
+  "mapDefault": {
+    "val21": 21,
+    "val22": 22
+  },
+  "slice": [
+    1,
+    2,
+    3
+  ],
+  "sliceDefault": [
+    4,
+    5,
+    6
+  ]
+}
