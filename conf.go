@@ -99,7 +99,7 @@ func (mapDefaultsTransformer) Transformer(t reflect.Type) func(dst, src reflect.
 }
 
 type fileConfig struct {
-	ConfigFilePaths []string `long:"conf" description:"config file paths" default:"config.yaml"`
+	ConfigFilePaths []string `long:"conf" description:"config file paths"`
 }
 
 func parseFlags(cfg any, defaults bool, copts *confOptions) ([]configPath, error) {
